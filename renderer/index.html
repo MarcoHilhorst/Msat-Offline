@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self'"/>
+    <script src="js/renderer.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Rubik:wght@700&display=swap" rel="stylesheet">
+
+    <title>M-sat Match</title>
+    
+</head>
+<body>
+    <h2>M-sat Match!</h2>
+    <p>A little program to check for microsatellite matches</p>
+
+    <section class="pickTest">
+        <div class="testButtons">
+            <label for="selectedFile">
+                Check for matches
+                <input type="file" id="selectedFile">
+            </label>
+        </div>
+        <div class="testButtons">
+            <label for="selectedFilePO">
+                Test for Parent-Offspring
+                <input type="file" id="selectedFilePO">
+            </label>
+         </div>
+    </section>
+   
+    <section class="resultsSection">
+        <p id="placeHolderText">Results will be displayed here ...</p>
+        <ul class="matchResults">
+
+        </ul>
+        <ul class="parentOffspring">
+
+        </ul>
+        <div class="clearButton">
+            <button id="clear">Clear</button>
+        </div>     
+        
+    </section>    
+</body>
+</html>

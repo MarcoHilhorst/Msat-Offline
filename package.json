@@ -1,0 +1,28 @@
+{
+  "name": "msat-match",
+  "version": "1.0.0",
+  "description": "App to check for microsatellite matches",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "author": "Marco Hilhorst",
+  "license": "ISC",
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "electron": "^22.1.0",
+    "electron-builder": "^23.6.0"
+  },
+  "build": {
+    "appId": "com.mhil.msat",
+    "productName": "M-sat Match",
+    "target": "NSIS",
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false
+    }
+  }
+}
