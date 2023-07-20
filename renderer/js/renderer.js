@@ -6,7 +6,7 @@ const DataFile = {
     // converts the workbook data into a JSON format
     convertJSON(e){
         const file = e.target.files[0].path
-        var wb = xlsx.readFile(file).Sheets["TestSheet"]
+        var wb = xlsx.readFile(file).Sheets["M-sat"]
         var convert = xlsx.json(wb)
         return convert
     },
@@ -68,6 +68,22 @@ function checkForMatches(e){
 
     DataFile.removeElementsByClass('match')
     DataFile.removePlaceHolder()
+
+    // Will give the user an error if there is no sheet called "M-sat"
+    const file = e.target.files[0].path
+    var wb = xlsx.readFile(file).Sheets["M-sat"]
+    if (!wb){
+        document.getElementById('placeHolderText').classList.remove('hidden')
+         return alert(`Couldn't find a worksheet named "M-sat"`)
+        
+    } 
+
+    // ----------------------------------
+    // Experimental
+
+    
+
+    // ----------------------------------
     
 
     // initialising variables for file loading / data manipulation
@@ -145,7 +161,7 @@ function checkForMatches(e){
                         finCounter += 2
                         dropoutCounter += 1
                         myNum = markerNum + 2
-                        dropOutMarker.push(titles[myNum]) 
+                        dropOutMarker.push(` ${titles[myNum]}`) 
                         
                     }
 
@@ -154,14 +170,14 @@ function checkForMatches(e){
                         finCounter += 2
                         dropoutCounter += 1
                         myNum = markerNum + 2
-                        dropOutMarker.push(titles[myNum]) 
+                        dropOutMarker.push(` ${titles[myNum]}`) 
                      
                     }
                     else if(compSequence.Dropout === true && compHomZyg && compMarker1 === refMarker1 || compSequence.Dropout === true && compHomZyg && compMarker2 === refMarker2){
                         finCounter += 2
                         dropoutCounter += 1
                         myNum = markerNum + 2
-                        dropOutMarker.push(titles[myNum]) 
+                        dropOutMarker.push(` ${titles[myNum]}`) 
                      
                     }
                     
