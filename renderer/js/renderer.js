@@ -32,15 +32,15 @@ const DataFile = {
 
     },
  
-    removePlaceHolder(){
-        document.getElementById('placeHolderText').classList.add('hidden')
-    },
+    // removePlaceHolder(){
+    //     document.getElementById('placeHolderText').classList.add('hidden')
+    // },
 
     clearText () {
         DataFile.removeElementsByClass('match')
         DataFile.removeElementsByClass('POmatch')
         DataFile.removeElementsByClass('PORow')
-        document.getElementById('placeHolderText').classList.remove('hidden')
+        // document.getElementById('placeHolderText').classList.remove('hidden')
         const tT = document.querySelector('.tableTitle')
         tT.innerHTML = ''
         const loadedFile = document.querySelector('#selectedFile')
@@ -63,6 +63,8 @@ if(clr){
 
 
 
+
+
 //function that assigns eventlisteners after on load
 window.onload=function(){
     document.querySelector('#selectedFile').addEventListener('change', checkForMatches)
@@ -74,13 +76,13 @@ window.onload=function(){
 function checkForMatches(e){
 
     DataFile.removeElementsByClass('match')
-    DataFile.removePlaceHolder()
+    // DataFile.removePlaceHolder()
 
     // Will give the user an error if there is no sheet called "M-sat"
     const file = e.target.files[0].path
     var wb = xlsx.readFile(file).Sheets["M-sat"]
     if (!wb){
-        document.getElementById('placeHolderText').classList.remove('hidden')
+        // document.getElementById('placeHolderText').classList.remove('hidden')
          return alert(`Couldn't find a worksheet named "M-sat"`)
         
     } 
@@ -95,6 +97,8 @@ function checkForMatches(e){
 
     // initialising variables for file loading / data manipulation
     let data = DataFile.convertJSON(e)
+
+    DataFile.clearText()
 
     // Functions to take data in from the excel sheet and manipulate it to suit the test requirements
     DataFile.concatSequence(data)
@@ -124,6 +128,8 @@ function checkForMatches(e){
             let dropoutCounter = 0
             let noDataCounter = 0
             let messageString = ""
+            let sampleIDs = ""
+            let additionalInfo = ""
             let dropOutMarker = []
             let compSequence = data[compSeqIndex]
             // refSeqIndex is taken from the outermost loop 
@@ -194,21 +200,29 @@ function checkForMatches(e){
             if(finCounter === refSeqLength){
                 matchIDs.push([refSequence.ID, compSequence.ID])
                 messageString += `${refSequence.ID} matches with ${compSequence.ID}. `
+
+                sampleIDs += `${refSequence.ID} - ${compSequence.ID}`
             }
 
             if(dropoutCounter !== 0){
                 if(dropoutCounter > 1){
                     messageString += `This assumes allelic drop out at these ${dropoutCounter} markers: ${dropOutMarker}. `
+
+                    additionalInfo += `This assumes allelic drop out at these ${dropoutCounter} markers: ${dropOutMarker}. `
                 }else{
                     messageString += `This assumes allelic drop out at marker: ${dropOutMarker}. `
+
+                    additionalInfo += `This assumes allelic drop out at marker: ${dropOutMarker}. `
                 }
             }
 
             if(noDataCounter !== 0){
                 if(noDataCounter > 1){
                     messageString += `There are ${noDataCounter} markers where at least one sample has no data.`
+                    additionalInfo += `There are ${noDataCounter} markers where at least one sample has no data.`
                 }else{
                     messageString += `There is ${noDataCounter} marker where at least one sample has no data.`
+                    additionalInfo += `There is ${noDataCounter} marker where at least one sample has no data.`
                 }
                 
             }
@@ -219,6 +233,30 @@ function checkForMatches(e){
                 li.className = 'match'
                 li.innerHTML = messageString
                 document.querySelector('.matchResults').appendChild(li)
+
+                // create the title if not already generated
+                const tableTitle = document.querySelector('.tableTitle')
+                tableTitle.innerHTML = 'Possible matches'
+
+                // Create a new <tr> element
+                var newRow = document.createElement('tr');
+                newRow.className = "match"
+
+
+                // Add some content to the new row
+                var cell1 = document.createElement('td');
+                cell1.textContent = sampleIDs;
+                var cell2 = document.createElement('td');
+                cell2.textContent = additionalInfo;
+                newRow.appendChild(cell1);
+                newRow.appendChild(cell2);
+
+                // Find the existing table with the class "tableData"
+                var table = document.querySelector('.tableData');
+
+                // Append the new row to the table
+                table.appendChild(newRow);
+        
             }
                         
         }
@@ -232,12 +270,15 @@ function checkForMatches(e){
 
 function checkParentOffspring(e){
 
-    DataFile.removeElementsByClass('POmatch')
-    DataFile.removeElementsByClass('PORow')
-    DataFile.removePlaceHolder()
+    // DataFile.removeElementsByClass('POmatch')
+    // DataFile.removeElementsByClass('PORow')
+    // DataFile.removePlaceHolder()
 
     // initialising variables for file loading / data manipulation 
     let data = DataFile.convertJSON(e)
+
+    // clears the form and the text in the results section
+    DataFile.clearText()
 
     // Functions to take data in from the excel sheet and manipulate it to suit the test requirements
     DataFile.concatSequence(data)
@@ -323,11 +364,10 @@ function checkParentOffspring(e){
             if(finCounter === refSeqLength){
                 
 
-                // create the title if not already generated
+                // change the title for Parent offspring test
                 const tableTitle = document.querySelector('.tableTitle')
-                if(tableTitle.innerHTML !== "Parent - Offspring"){
-                    tableTitle.innerHTML = 'Possible parent-offspring matches'
-                }
+                tableTitle.innerHTML = 'Possible parent-offspring matches'
+                
 
                 // create li elements
                 // var li = document.createElement("li")
@@ -363,7 +403,7 @@ function checkParentOffspring(e){
 
     if(matchIDs.length === 0){
         alert('No matches found')
-        document.getElementById('placeHolderText').classList.remove('hidden')
+        // document.getElementById('placeHolderText').classList.remove('hidden')
     }
 
 }
