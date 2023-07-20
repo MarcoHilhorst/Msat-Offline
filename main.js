@@ -1,7 +1,7 @@
 const path = require('path');
 const { app, BrowserWindow, Menu } = require('electron');
 
-
+const isDev = process.env.NODE_ENV !== 'production'
 const isMac = process.platform === 'darwin';
 
 
@@ -14,7 +14,7 @@ function createMainWindow(){
 
     const mainWindow = new BrowserWindow({
         title: 'M-sat Match',
-        width:  450,
+        width:  isDev ? 1000:450,
         height: 700,
         webPreferences: {
             contextIsolation: true,
@@ -23,6 +23,10 @@ function createMainWindow(){
         }
     });
    
+
+    if(isDev){
+        mainWindow.webContents.openDevTools()
+    }
 
     mainWindow.loadFile(path.join(__dirname, './renderer/index.html'));
 }

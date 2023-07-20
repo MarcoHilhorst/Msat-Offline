@@ -39,7 +39,14 @@ const DataFile = {
     clearText () {
         DataFile.removeElementsByClass('match')
         DataFile.removeElementsByClass('POmatch')
+        DataFile.removeElementsByClass('PORow')
         document.getElementById('placeHolderText').classList.remove('hidden')
+        const tT = document.querySelector('.tableTitle')
+        tT.innerHTML = ''
+        const loadedFile = document.querySelector('#selectedFile')
+        const loadedFilePO = document.querySelector('#selectedFilePO')
+        loadedFile.value = ''
+        loadedFilePO.value = ''
 
     }
 }
@@ -226,8 +233,8 @@ function checkForMatches(e){
 function checkParentOffspring(e){
 
     DataFile.removeElementsByClass('POmatch')
+    DataFile.removeElementsByClass('PORow')
     DataFile.removePlaceHolder()
-    
 
     // initialising variables for file loading / data manipulation 
     let data = DataFile.convertJSON(e)
@@ -250,7 +257,7 @@ function checkParentOffspring(e){
             // initialising variables for 3rd loop
             let finCounter = 0
             let noDataCounter = 0
-            let messageString = ""
+            // let messageString = ""
             let sampleIDs = ""
             let additionalInfo = ""
             let compSequence = data[compSeqIndex]
@@ -281,6 +288,9 @@ function checkParentOffspring(e){
 
                     // if ref marker1 matches comp1 or comp 2. Or if ref marker2 matches comp1 or comp2
                     if(refMarker1 === compMarker1 || refMarker1 === compMarker2 || refMarker2 === compMarker1 || refMarker2 === compMarker2){
+                        if(refMarker1 === 0 || refMarker2 === 0){
+                            noDataCounter += 1
+                        }
                         finCounter += 2
                     }
 
@@ -294,16 +304,16 @@ function checkParentOffspring(e){
              
              if(finCounter === refSeqLength){
                 matchIDs.push([refSequence.ID, compSequence.ID])
-                messageString += `${refSequence.ID} matches with ${compSequence.ID} for the parent offspring test. `
+                // messageString += `${refSequence.ID} matches with ${compSequence.ID} for the parent offspring test. `
                 sampleIDs += `${refSequence.ID} - ${compSequence.ID}`
             }
 
             if(noDataCounter !== 0){
                 if(noDataCounter > 1){
-                    messageString += `There are ${noDataCounter} markers where at least one sample has no data.`
+                    // messageString += `There are ${noDataCounter} markers where at least one sample has no data.`
                     additionalInfo += `There are ${noDataCounter} markers where at least one sample has no data.`
                 }else{
-                    messageString += `There is ${noDataCounter} marker where at least one sample has no data.`
+                    // messageString += `There is ${noDataCounter} marker where at least one sample has no data.`
                     
                     additionalInfo += `There is ${noDataCounter} marker where at least one sample has no data.`
                 }
@@ -311,25 +321,35 @@ function checkParentOffspring(e){
             }
 
             if(finCounter === refSeqLength){
-                console.log(messageString)
-                var li = document.createElement("li")
-                li.className = 'POmatch'
-                li.innerHTML = messageString
-                document.querySelector('.parentOffspring').appendChild(li)
+                
+
+                // create the title if not already generated
+                const tableTitle = document.querySelector('.tableTitle')
+                if(tableTitle.innerHTML !== "Parent - Offspring"){
+                    tableTitle.innerHTML = 'Possible parent-offspring matches'
+                }
+
+                // create li elements
+                // var li = document.createElement("li")
+                // li.className = 'POmatch'
+                // li.innerHTML = messageString
+                // document.querySelector('.parentOffspring').appendChild(li)
 
                 // Create a new <tr> element
-                const newRow = document.createElement('tr');
+                var newRow = document.createElement('tr');
+                newRow.className = "PORow"
+
 
                 // Add some content to the new row
-                const cell1 = document.createElement('td');
+                var cell1 = document.createElement('td');
                 cell1.textContent = sampleIDs;
-                const cell2 = document.createElement('td');
+                var cell2 = document.createElement('td');
                 cell2.textContent = additionalInfo;
                 newRow.appendChild(cell1);
                 newRow.appendChild(cell2);
 
                 // Find the existing table with the class "tableData"
-                const table = document.querySelector('.tableData');
+                var table = document.querySelector('.tableData');
 
                 // Append the new row to the table
                 table.appendChild(newRow);
