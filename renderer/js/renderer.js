@@ -127,7 +127,7 @@ function checkForMatches(e){
             let finCounter = 0
             let dropoutCounter = 0
             let noDataCounter = 0
-            let messageString = ""
+            // let messageString = ""
             let sampleIDs = ""
             let additionalInfo = ""
             let dropOutMarker = []
@@ -160,14 +160,15 @@ function checkForMatches(e){
 
                     //---- Conditions for progressing through the markers -----
 
-                    if(refMarker1 === compMarker1 && refMarker2 === compMarker2){
-                        finCounter += 2
-                    }
-
-                    else if(refHomZyg && refMarker1 === 0 || compHomZyg && compMarker1 === 0){
+                    if(refHomZyg && refMarker1 === 0 || compHomZyg && compMarker1 === 0){
                         finCounter += 2
                         noDataCounter += 1
                     }
+
+                    else if(refMarker1 === compMarker1 && refMarker2 === compMarker2){
+                        finCounter += 2
+                    }
+
 
                     //If both sequences are homozygous and have dropout enabled
                     else if(refSequence.Dropout === true && refHomZyg && data[compSeqIndex].Dropout === true && compHomZyg) {
@@ -199,18 +200,18 @@ function checkForMatches(e){
             }
             if(finCounter === refSeqLength){
                 matchIDs.push([refSequence.ID, compSequence.ID])
-                messageString += `${refSequence.ID} matches with ${compSequence.ID}. `
+                // messageString += `${refSequence.ID} matches with ${compSequence.ID}. `
 
                 sampleIDs += `${refSequence.ID} - ${compSequence.ID}`
             }
 
             if(dropoutCounter !== 0){
                 if(dropoutCounter > 1){
-                    messageString += `This assumes allelic drop out at these ${dropoutCounter} markers: ${dropOutMarker}. `
+                    // messageString += `This assumes allelic drop out at these ${dropoutCounter} markers: ${dropOutMarker}. `
 
                     additionalInfo += `This assumes allelic drop out at these ${dropoutCounter} markers: ${dropOutMarker}. `
                 }else{
-                    messageString += `This assumes allelic drop out at marker: ${dropOutMarker}. `
+                    // messageString += `This assumes allelic drop out at marker: ${dropOutMarker}. `
 
                     additionalInfo += `This assumes allelic drop out at marker: ${dropOutMarker}. `
                 }
@@ -218,21 +219,21 @@ function checkForMatches(e){
 
             if(noDataCounter !== 0){
                 if(noDataCounter > 1){
-                    messageString += `There are ${noDataCounter} markers where at least one sample has no data.`
+                    // messageString += `There are ${noDataCounter} markers where at least one sample has no data.`
                     additionalInfo += `There are ${noDataCounter} markers where at least one sample has no data.`
                 }else{
-                    messageString += `There is ${noDataCounter} marker where at least one sample has no data.`
+                    // messageString += `There is ${noDataCounter} marker where at least one sample has no data.`
                     additionalInfo += `There is ${noDataCounter} marker where at least one sample has no data.`
                 }
                 
             }
 
             if(finCounter === refSeqLength){
-                console.log(messageString)
-                var li = document.createElement("li")
-                li.className = 'match'
-                li.innerHTML = messageString
-                document.querySelector('.matchResults').appendChild(li)
+
+                // var li = document.createElement("li")
+                // li.className = 'match'
+                // li.innerHTML = messageString
+                // document.querySelector('.matchResults').appendChild(li)
 
                 // create the title if not already generated
                 const tableTitle = document.querySelector('.tableTitle')
