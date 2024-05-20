@@ -72,11 +72,29 @@ window.onload=function(){
     document.querySelector('#clear').addEventListener('click', DataFile.clearText)
 }
 
+function dropoutLimit() {
+    return document.getElementById('dropoutLimit').value
+}
+
+function noDataLimit() {
+    return document.getElementById('noDataLimit').value
+}
+
+
 // checks for matching samples
 function checkForMatches(e){
 
+    // This grabs the dropout limit set by the user
+    // let dropoutLimit = document.getElementById('dropoutLimit').value
+
+    // This function may be redundant with the new table display
     DataFile.removeElementsByClass('match')
-    // DataFile.removePlaceHolder()
+    
+    DataFile.removeElementsByClass('match')
+    DataFile.removeElementsByClass('POmatch')
+    DataFile.removeElementsByClass('PORow')
+
+   
 
     // Will give the user an error if there is no sheet called "M-sat"
     const file = e.target.files[0].path
@@ -228,7 +246,7 @@ function checkForMatches(e){
                 
             }
 
-            if(finCounter === refSeqLength){
+            if(finCounter === refSeqLength && dropoutCounter <= dropoutLimit() && noDataCounter <= noDataLimit()){
 
                 // var li = document.createElement("li")
                 // li.className = 'match'
@@ -265,6 +283,9 @@ function checkForMatches(e){
     if(matchIDs.length === 0){
         alert('No matches found')
         document.getElementById('placeHolderText').classList.remove('hidden')
+    }
+    else {
+        alert('Done!')
     }
 
 }
@@ -362,19 +383,13 @@ function checkParentOffspring(e){
                 
             }
 
-            if(finCounter === refSeqLength){
+            if(finCounter === refSeqLength && noDataCounter <= noDataLimit()){
                 
 
                 // change the title for Parent offspring test
                 const tableTitle = document.querySelector('.tableTitle')
                 tableTitle.innerHTML = 'Possible parent-offspring matches'
                 
-
-                // create li elements
-                // var li = document.createElement("li")
-                // li.className = 'POmatch'
-                // li.innerHTML = messageString
-                // document.querySelector('.parentOffspring').appendChild(li)
 
                 // Create a new <tr> element
                 var newRow = document.createElement('tr');
@@ -405,6 +420,9 @@ function checkParentOffspring(e){
     if(matchIDs.length === 0){
         alert('No matches found')
         // document.getElementById('placeHolderText').classList.remove('hidden')
+    } 
+    else {
+        alert('Done!')
     }
 
 }

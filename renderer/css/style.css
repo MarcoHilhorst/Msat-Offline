@@ -388,11 +388,11 @@ h2::after {
   background-image: linear-gradient(90deg, #beaadd 0%, #da8a9f 100%);
 }
 
-input {
+.testButtons input {
     display: none;
 }
 
-label {
+.testButtons label {
     border: 2px solid #ffffff;
     border-radius: 10px;
     display: flex;
@@ -406,7 +406,7 @@ label {
 }
 
 
-label:hover {    
+.testButtons label:hover {    
     background: linear-gradient(90deg, #beaadd 0%, #da8a9f 100%);
     cursor: pointer;    
     
@@ -515,4 +515,27 @@ tr:nth-child(even) {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.setLimits {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  padding: 1rem;
+}
+.setLimits input {
+  width: 50px;
+}
+
+.setDropout {
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+}
+
+.setNoData {
+  display: flex;
+    width: 80%;
+    justify-content: space-between;
 }
